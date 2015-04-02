@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <string.h>
 // sorted 536870911 random elements in 368.177274 seconds
-
+// twist on original to maximize memory efficiency
 /* HeapSort takes advantage of a Heap Data Structure */
 
 /* Sifts an item down the heap if it is less than either of its children */
-void sift_down(int *items, int numitems, int index)
+void sift_down(int **items, int numitems, int index)
 {
-    int elementToSift = (items)[index];
+    int elementToSift = (*items)[index];
     int leftchild = 2 * index + 1;
     int rightchild = 2 * index + 2;
     int child = leftchild;
@@ -18,32 +18,32 @@ void sift_down(int *items, int numitems, int index)
         return;
     }
 
-    if(rightchild < numitems && (items)[rightchild] > (items)[leftchild])
+    if(rightchild < numitems && (*items)[rightchild] > (*items)[leftchild])
     {
         child = rightchild;
     }
 
-    if((items)[index] < (items)[child])
+    if((*items)[index] < (*items)[child])
     {
-        (items)[index] = (items)[child];
-        (items)[child] = elementToSift;
+        (*items)[index] = (*items)[child];
+        (*items)[child] = elementToSift;
         sift_down(items, numitems, child);
     }
     return;
 }
 
 /* Removes the top item of the heap */
-int remove_max(int *items, int *numitems)
+int remove_max(int **items, int *numitems)
 {
-    int element = items[0];
-    items[0] = items[*numitems - 1];
+    int element = (*items)[0];
+    (*items)[0] = (*items)[*numitems - 1];
     (*numitems)--;
     sift_down(items,*numitems,0);
     return element;
 }
 
 /* Builds the heap */
-void build_heap(int *items, int numitems)
+void build_heap(int **items, int numitems)
 {
     int i;
     for(i = (numitems - 2)/2; i >= 0; i--)
@@ -51,10 +51,9 @@ void build_heap(int *items, int numitems)
 }
 
 /* The actual sorting algorithm */
-int *ascending_heap_sort(int *items, int numitems)
+void *ascending_heap_sort(int **items, int numitems)
 {
     build_heap(items, numitems);
-    int *a =(int *)malloc(4*numitems);
 
     int i;
 
@@ -62,12 +61,8 @@ int *ascending_heap_sort(int *items, int numitems)
     for(sorted = numitems - 1; sorted > 0; sorted--)
     {
         int num = remove_max(items, &numitems);
-        a[sorted] = num;
+        (*items)[sorted] = num;
     }
-
-    a[0] = items[0];
-
-    return a;
 }
 
 /* -------------------------------------------------------- */
@@ -92,7 +87,7 @@ int main(int argv, char* args[])
     clock_t begin, end;
     double time_spent;
     begin = clock();
-    int *b = ascending_heap_sort(a,arg);
+    ascending_heap_sort(&a,arg);
     end = clock();
 
     time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
@@ -100,7 +95,7 @@ int main(int argv, char* args[])
     int i;
     for(i = 0; i < arg; i++)
     {
-        printf("%d\n",b[i]);
+        printf("%d\n",a[i]);
     }
     printf("sorted %d elements in %f seconds\n", arg, time_spent);
     return 0;
