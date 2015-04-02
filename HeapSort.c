@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 // sorted 536870911 random elements in 368.177274 seconds
-
+// Memory efficient and quick sorting algorithm (O(nlogn))
 /* HeapSort takes advantage of a Heap Data Structure */
 
 /* Sifts an item down the heap if it is less than either of its children */
