@@ -3,7 +3,7 @@
 #include <string.h>
 // sorted 536870911 random elements in 368.177274 seconds
 
-// twist on original to maximize memory efficiency
+// sorted 1000000 random elements in .304547 seconds
 
 // Memory efficient and quick sorting algorithm (O(nlogn))
 
