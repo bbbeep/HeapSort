@@ -37,12 +37,11 @@ void sift_down(int **items, int numitems, int index)
 }
 
 /* Removes the top item of the heap */
-int remove_max(int **items, int *numitems)
+int remove_max(int **items, int numitems)
 {
     int element = (*items)[0];
-    (*items)[0] = (*items)[*numitems - 1];
-    (*numitems)--;
-    sift_down(items,*numitems,0);
+    (*items)[0] = (*items)[numitems];
+    sift_down(items,numitems,0);
     return element;
 }
 
@@ -59,12 +58,11 @@ void *ascending_heap_sort(int **items, int numitems)
 {
     build_heap(items, numitems);
 
-    int i;
-
     int sorted;
     for(sorted = numitems - 1; sorted > 0; sorted--)
     {
-        int num = remove_max(items, &numitems);
+        numitems--;
+        int num = remove_max(items, numitems);
         (*items)[sorted] = num;
     }
 }
@@ -83,7 +81,7 @@ int main(int argv, char* args[])
     {
         a[j] = rand() % arg + 1;
     }
-
+    
     for(j = 0; j < arg; j++)
         printf("%d\n",a[j]);
     printf("\n");
@@ -101,6 +99,7 @@ int main(int argv, char* args[])
     {
         printf("%d\n",a[i]);
     }
+    
     printf("sorted %d elements in %f seconds\n", arg, time_spent);
     return 0;
 }
