@@ -61,8 +61,8 @@ void *ascending_heap_sort(int **items, int numitems)
     int sorted;
     for(sorted = numitems - 1; sorted > 0; sorted--)
     {
-        numitems--;
-        int num = remove_max(items, numitems);
+        //numitems--;
+        int num = remove_max(items, sorted);
         (*items)[sorted] = num;
     }
 }
